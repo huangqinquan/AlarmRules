@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog>
+	<!-- 入口 -->
+	<chain name="alarm">
+ 		<command className="com.meiya.alarm.parse.cmd.AlarmCommand" id="alarmcmd"/>
+	</chain>
+</catalog>

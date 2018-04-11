@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+       <!--管理scan的单线程线程池-->
+       <bean id="scanThreadPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" >
+              <!--核心线程数-->
+              <property name="corePoolSize" value="1" />
+              <!--最大线程数-->
+              <property name="maxPoolSize" value="1" />
+              <!--队列最大长度-->
+              <property name="queueCapacity" value="10" />
+              <!--线程池维护线程所允许的空闲时间-->
+              <property name="keepAliveSeconds" value="30000" />
+              <!--线程对拒绝任务的处理策略-->
+              <property name="rejectedExecutionHandler" >
+                     <bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
+              </property>
+       </bean>
+
+       <!--jms线程池配置-->
+       <jms:listener-container task-executor="jmsSrcExecutor" concurrency="5-5"  prefetch="20">
+              <jms:listener destination="${alarm.queue.name}" ref="parserListener" />
+       </jms:listener-container>
+       <!--上传线程池配置-->
+       <jms:listener-container task-executor="jmsSrcExecutor" concurrency="1-1"  prefetch="20">
+              <jms:listener destination="Temp${alarm.queue.name}" ref="uploadListener" />
+       </jms:listener-container>
+       <task:executor id="jmsSrcExecutor" pool-size="40-40" queue-capacity="40" rejection-policy="CALLER_RUNS"/>
+
+       <task:annotation-driven />
+
+
+</beans>

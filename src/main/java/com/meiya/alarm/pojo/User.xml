@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybaits.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.meiya.alarm.dao.UserDao">
+
+    <select id="getUserList" resultType="com.meiya.alarm.pojo.User" >
+        <![CDATA[
+            select * from t_user
+        ]]>
+    </select>
+
+    <update id="updateExportNum" >
+        <![CDATA[
+            UPDATE t_user SET exportNum = exportNum + #{exportNum} WHERE userid = #{userId}
+        ]]>
+    </update>
+
+
+</mapper>

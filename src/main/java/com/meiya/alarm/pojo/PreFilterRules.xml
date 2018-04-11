@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybaits.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.meiya.alarm.dao.PreFilterRulesDao">
+
+    <select id="getRulesList" resultType="com.meiya.alarm.pojo.PreFilterRules" >
+        <![CDATA[
+            SELECT *
+            FROM pre_filter_rules as t1 FORCE INDEX(t_enable),
+            t_user as t2  FORCE INDEX(t_enable)
+            WHERE
+            t1.addUserId = t2.userid and
+            t2.userenable = 1 AND
+            t1.enable = 1 AND
+            t1.expireTime > NOW()
+        ]]>
+    </select>
+
+
+
+</mapper>
